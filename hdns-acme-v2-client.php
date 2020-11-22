@@ -37,6 +37,9 @@ final class Util
             // post method
             curl_setopt($ch, CURLOPT_POST, true);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+        } else if ($method == 'delete') {
+            // delete method
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
         } else {
             echo "curl failed: invalid http method\n";
             return false;
