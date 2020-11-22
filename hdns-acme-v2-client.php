@@ -605,12 +605,13 @@ function main($argc, $argv)
         return false;
     }
     // issue certificate
-    //$name = "_acme-challenge.".$domain_list[0];
     $host = implode(".", explode(".", $domain_list[0], -2));    
     $name = "_acme-challenge";
-    if (sizeof($host) > 0) {
+
+    if (strlen($host) > 0) {
         $name = $name . "." . $host;
     }
+
     $issued = $acme_client->issueCertificate($domain_list,
             $output_cert_file,
             $authApiToken, $zoneId, $name);
