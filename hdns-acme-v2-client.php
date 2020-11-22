@@ -258,7 +258,7 @@ final class AcmeClient
     }
 
     public function issueCertificate(
-        $domain_list, $http_challenge_dir, $output_cert_file,
+        $domain_list, $output_cert_file,
         $authApiToken, $zoneId, $name)
     {
         $identifiers = array();
@@ -574,7 +574,7 @@ function printUsage($prog_name)
 function main($argc, $argv)
 {
     $prog_name = basename($argv[0]);
-    $cmd_options = getopt('d:c:k:z:t:');
+    $cmd_options = getopt('d:k:z:t:');
     if (!isset($cmd_options['d']) ||
         !isset($cmd_options['k']) ||
         !isset($cmd_options['z'])) {
@@ -585,7 +585,6 @@ function main($argc, $argv)
     $account_key_file = "account.key";
     $csr_file = "domain.csr";
     $domain_list = explode(";", $cmd_options['d']);
-    $http_challenge_dir = "bogus"; //$cmd_options['c'];
     $output_cert_file = "domain.crt";
     $authApiToken = $cmd_options['k'];
     $zoneId = $cmd_options['z'];
@@ -613,7 +612,7 @@ function main($argc, $argv)
         $name = $name . "." . $host;
     }
     $issued = $acme_client->issueCertificate($domain_list,
-            $http_challenge_dir, $output_cert_file,
+            $output_cert_file,
             $authApiToken, $zoneId, $name);
     
     $acme_client->removeTxt($authApiToken);
