@@ -27,8 +27,8 @@ First, chmod +x \*.sh
 
 Following scripts are not necessary but may be helpful:
 * clean.sh - removes files from previous run
-* hzones.sh - retrieve zone id
-* optrun.sh - create input files and run main php code
+* hzones.sh - helps with knowing your zone id
+* optrun.sh - creates input files and runs main php code
 
 ## See also
 README.md at [kaienkira/acme-v2-client](https://github.com/kaienkira/acme-v2-client)
