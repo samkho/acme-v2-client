@@ -23,8 +23,9 @@ Single php file for easy modification.  Some extra convenience scripts provided.
 * domain.key
 
 ## Convenience scripts
-chmod +x \*.sh
+First, chmod +x \*.sh
 
+Following scripts are not necessary but may be helpful:
 * clean.sh - removes files from previous run
 * hzones.sh - retrieve zone id
 * optrun.sh - create input files and run main php code
