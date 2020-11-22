@@ -2,6 +2,7 @@
 * An acme v2 client that uses dns challenge, for Hetzner DNS users.
 * Forked from [kaienkira/acme-v2-client](https://github.com/kaienkira/acme-v2-client), and modified to use dns challenge instead of http directory challenge.
 * Single php file for easy modification.  Some extra convenience scripts provided.
+* Note that Hetzner DNS is free even for non-Hetzner customers.
 
 ## Input arguments to hdns-acme-v2-client.php
 * domain name
