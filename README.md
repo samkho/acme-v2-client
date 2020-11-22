@@ -2,6 +2,7 @@
 * An acme v2 client that uses dns challenge, for Hetzner DNS users.
 * Forked from [kaienkira/acme-v2-client](https://github.com/kaienkira/acme-v2-client), and modified to use dns challenge instead of http directory challenge.
 * Single php file for easy modification.  Some extra convenience scripts provided.
+* Note that Hetzner DNS is free even for non-Hetzner customers.
 
 ## Input arguments to hdns-acme-v2-client.php
 * domain name
@@ -25,13 +26,15 @@
 ## Convenience scripts
 First, chmod +x \*.sh
 
-Following scripts are not necessary but may be helpful:
+Scripts are not necessary but may be helpful:
 * clean.sh - removes files from previous run
 * hzones.sh - helps with knowing your zone id, which is needed by optrun.sh and hdns-acme-v2-client.php
 * optrun.sh - creates input files and runs main php code
 
 ## See also
 README.md at [kaienkira/acme-v2-client](https://github.com/kaienkira/acme-v2-client)
+
+[Hetzner DNS Public API](https://dns.hetzner.com/api-docs/)
 
 # Thanks
 [kaienkira](https://github.com/kaienkira)
