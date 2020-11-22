@@ -1,3 +1,8 @@
+# Work-in-progress
+Forked from kaienkira/acme-v2-client, this project is being modified to use dns-01 challenge.
+
+Below is from original README.md...
+
 # acme-v2-client
 a small PHP script to get and renew TLS certs from Let's Encrypt (Support ACME v2)
 
