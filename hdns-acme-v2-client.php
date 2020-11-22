@@ -329,43 +329,6 @@ final class AcmeClient
 
             $challenges = $response['challenges'];
 
-            /*
-            $http_challenge = null;
-            foreach ($challenges as $challenge) {
-                if (isset($challenge['type']) &&
-                    isset($challenge['url']) &&
-                    isset($challenge['token']) &&
-                    $challenge['type'] === 'http-01') {
-                    $http_challenge = $challenge;
-                }
-            }
-            if ($http_challenge === null) {
-                echo 'acme/authorization failed: `challenges` is invalid'."\n";
-                return false;
-            }
-
-            // write challenge file
-            $challenge_file_path =
-                $http_challenge_dir.'/'.$http_challenge['token'];
-            $challenge_file_content = $http_challenge['token'].'.'
-                .$this->account_key_info_['thumb_print'];
-            if (file_put_contents($challenge_file_path,
-                    $challenge_file_content) === false) {
-                return false;
-            }
-
-            // send challenge ready
-            $ret = self::signedHttpRequest($http_challenge['url'], '{}');
-            if ($ret === false) {
-                return false;
-            }
-            if ($ret['http_code'] != 200) {
-                echo 'acme/challenge failed: '.$ret['response']."\n";
-                return false;
-            }
-            */
-
-            //[ sam added this
             $dns_challenge = null;
             foreach ($challenges as $challenge) {
                 if (isset($challenge['type']) &&
@@ -407,7 +370,6 @@ final class AcmeClient
                 echo 'acme/challenge failed: '.$ret['response']."\n";
                 return false;
             }
-            //] END sam added
 
             // wait to be verified
             for (;;) {
