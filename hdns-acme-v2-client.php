@@ -82,6 +82,8 @@ final class AcmeClient
     private $new_order_url_ = null;
     private $tos_url_ = null;
 
+    private $record_id_ = null; // "passed" from addTxt to removeTxt
+
     public function init($account_key_file, $csr_file)
     {
         if ($this->initAccountKey($account_key_file) === false) {
@@ -230,8 +232,34 @@ final class AcmeClient
         return true;
     }
 
+    function addTxt($authApiToken, $zoneId, $name, $value)
+    {
+        $this->record_id_ = null;
+
+        $data = '{"type":"TXT","ttl":60,"name":"%NAME%","value":"%VALUE%","zone_id":"%ZONE_ID%"}';
+        $data = str_replace(   "%NAME%", $name,   $data);
+        $data = str_replace(  "%VALUE%", $value,  $data);
+        $data = str_replace("%ZONE_ID%", $zoneId, $data);
+    
+        $headers = array('Content-Type: application/json', 'Auth-API-Token: '.$authApiToken);
+    
+        return Util::httpRequest("https://dns.hetzner.com/api/v1/records", "POST", $data, $headers);
+    }
+    
+    function removeTxt($authApiToken)
+    {
+        if (null == $this->record_id_)
+            return ;
+
+        $url = "https://dns.hetzner.com/api/v1/records/".$this->record_id_;
+        $headers = array('Auth-API-Token: '.$authApiToken);
+    
+        return Util::httpRequest($url, "DELETE", '', $headers);
+    }
+
     public function issueCertificate(
-        $domain_list, $http_challenge_dir, $output_cert_file)
+        $domain_list, $http_challenge_dir, $output_cert_file,
+        $authApiToken, $zoneId, $name)
     {
         $identifiers = array();
         foreach ($domain_list as $domain) {
@@ -301,6 +329,7 @@ final class AcmeClient
 
             $challenges = $response['challenges'];
 
+            /*
             $http_challenge = null;
             foreach ($challenges as $challenge) {
                 if (isset($challenge['type']) &&
@@ -334,6 +363,51 @@ final class AcmeClient
                 echo 'acme/challenge failed: '.$ret['response']."\n";
                 return false;
             }
+            */
+
+            //[ sam added this
+            $dns_challenge = null;
+            foreach ($challenges as $challenge) {
+                if (isset($challenge['type']) &&
+                    isset($challenge['url']) &&
+                    isset($challenge['token']) &&
+                    $challenge['type'] === 'dns-01') {
+                    $dns_challenge = $challenge;
+                }
+            }
+            if ($dns_challenge === null) {
+                echo 'acme/authorization failed: `challenges` is invalid'."\n";
+                return false;
+            }
+
+            // set TXT record
+            $keyAuth = $dns_challenge['token'].'.'
+                .$this->account_key_info_['thumb_print'];
+            $sha256 = openssl_digest($keyAuth, 'sha256', true);
+            $b64 = Util::urlbase64($sha256);
+
+            $added = self::addTxt($authApiToken, $zoneId, $name, $b64);
+            if ('200' != $added['http_code']) {
+                return false;
+            }
+            $resp = $added['response'];
+            $obj = json_decode($resp);
+            $this->record_id_ = $obj->record->id;
+
+            print("\nsleeping for 15 seconds for DNS TXT record...\n");
+            sleep(15);
+            printf("...woke up!\n\n");
+
+            // send challenge ready
+            $ret = self::signedHttpRequest($dns_challenge['url'], '{}');
+            if ($ret === false) {
+                return false;
+            }
+            if ($ret['http_code'] != 200) {
+                echo 'acme/challenge failed: '.$ret['response']."\n";
+                return false;
+            }
+            //] END sam added
 
             // wait to be verified
             for (;;) {
@@ -529,7 +603,8 @@ function printUsage($prog_name)
 {
     echo "usage: $prog_name ".
          '-d <domain_list(domain1;domain2...;domainN)> '.
-         '-c <http_challenge_dir> '.
+         '-k <auth_api_toKen> '.
+         '-z <zone_id> '.
          '[-t <terms_of_service>]'.
          "\n";
 }
@@ -537,9 +612,10 @@ function printUsage($prog_name)
 function main($argc, $argv)
 {
     $prog_name = basename($argv[0]);
-    $cmd_options = getopt('d:c:t:');
+    $cmd_options = getopt('d:c:k:z:t:');
     if (!isset($cmd_options['d']) ||
-        !isset($cmd_options['c'])) {
+        !isset($cmd_options['k']) ||
+        !isset($cmd_options['z'])) {
         printUsage($prog_name);
         return false;
     }
@@ -547,8 +623,10 @@ function main($argc, $argv)
     $account_key_file = "account.key";
     $csr_file = "domain.csr";
     $domain_list = explode(";", $cmd_options['d']);
-    $http_challenge_dir = $cmd_options['c'];
+    $http_challenge_dir = "bogus"; //$cmd_options['c'];
     $output_cert_file = "domain.crt";
+    $authApiToken = $cmd_options['k'];
+    $zoneId = $cmd_options['z'];
     $tos = isset($cmd_options['t']) ? $cmd_options['t'] : '';
 
     // create acme client
@@ -566,8 +644,19 @@ function main($argc, $argv)
         return false;
     }
     // issue certificate
-    if ($acme_client->issueCertificate($domain_list,
-            $http_challenge_dir, $output_cert_file) === false) {
+    //$name = "_acme-challenge.".$domain_list[0];
+    $host = implode(".", explode(".", $domain_list[0], -2));    
+    $name = "_acme-challenge";
+    if (sizeof($host) > 0) {
+        $name = $name . "." . $host;
+    }
+    $issued = $acme_client->issueCertificate($domain_list,
+            $http_challenge_dir, $output_cert_file,
+            $authApiToken, $zoneId, $name);
+    
+    $acme_client->removeTxt($authApiToken);
+    
+    if ($issued === false) {
         return false;
     }
 
