@@ -1,5 +1,5 @@
 # Work-in-progress
-Forked from kaienkira/acme-v2-client, this project is being modified to use dns-01 challenge.
+Forked from [kaienkira/acme-v2-client](https://github.com/kaienkira/acme-v2-client), this project is being modified to use dns-01 challenge.
 
 Below is from original README.md...
 
