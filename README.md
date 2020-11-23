@@ -43,7 +43,7 @@ README.md at [kaienkira/acme-v2-client](https://github.com/kaienkira/acme-v2-cli
 [Hetzner DNS Public API](https://dns.hetzner.com/api-docs/)
 
 [diafygi/gethttpsforfree](https://github.com/diafygi/gethttpsforfree) is a great way to learn how ACME protocol works.
-# Thanks
+## Thanks
 [kaienkira](https://github.com/kaienkira)
 
 tialaramex@reddit
