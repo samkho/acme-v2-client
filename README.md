@@ -29,8 +29,10 @@ First, chmod +x \*.sh
 
 Scripts are not necessary but may be helpful:
 * clean.sh - removes files from previous run
-* hzones.sh - helps with knowing your zone id, which is needed by optrun.sh and acme4hdns.php
-* optrun.sh - "optional runner script" that creates input files and runs main php code
+* hzones.sh - helps with knowing your zone id, which is needed by optrun.sh and acme4hdns.php.
+You'll need to set a variable in this file.
+* optrun.sh - "optional runner script" that creates input files and runs main php code.
+You'll need to set some variables in this file.
 
 ## See also
 README.md at [kaienkira/acme-v2-client](https://github.com/kaienkira/acme-v2-client)
