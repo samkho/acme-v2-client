@@ -44,6 +44,4 @@ README.md at [kaienkira/acme-v2-client](https://github.com/kaienkira/acme-v2-cli
 
 [diafygi/gethttpsforfree](https://github.com/diafygi/gethttpsforfree) is a great way to learn how ACME protocol works.
 ## Thanks
-[kaienkira](https://github.com/kaienkira)
-
-tialaramex@reddit
+[kaienkira](https://github.com/kaienkira), tialaramex@reddit
