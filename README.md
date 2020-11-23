@@ -24,8 +24,8 @@
 * domain.key
 
 ## Files to install on your server
-* domain.crt
-* domain.key
+* **domain.crt**
+* **domain.key**
 
 ## Convenience scripts
 First, chmod +x \*.sh
