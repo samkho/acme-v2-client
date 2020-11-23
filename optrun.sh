@@ -17,5 +17,5 @@ openssl genrsa -out domain.key 2048
 # openssl dhparam -out dhparams.pem 2048
 openssl req -new -sha256 -key domain.key -out domain.csr -subj "/CN=$DOMAIN"
 
-./hdns-acme-v2-client.php -d $DOMAIN -k $TOKEN -z $ZID
+./acme4hdns.php -d $DOMAIN -k $TOKEN -z $ZID
 
