@@ -4,7 +4,7 @@
 * Single php file for easy modification.  Some extra convenience scripts provided.
 * Note that Hetzner DNS is free even for non-Hetzner customers.
 
-## Input arguments to hdns-acme-v2-client.php
+## Input arguments to acme4hdns.php
 * domain name
 * Hetzner Auth API Token
 * Hetzner Zone Id
@@ -28,7 +28,7 @@ First, chmod +x \*.sh
 
 Scripts are not necessary but may be helpful:
 * clean.sh - removes files from previous run
-* hzones.sh - helps with knowing your zone id, which is needed by optrun.sh and hdns-acme-v2-client.php
+* hzones.sh - helps with knowing your zone id, which is needed by optrun.sh and acme4hdns.php
 * optrun.sh - creates input files and runs main php code
 
 ## See also
