@@ -38,10 +38,9 @@ You'll need to set a variable in this file.
 You'll need to set some variables in this file.
 
 ## See also
-README.md at [kaienkira/acme-v2-client](https://github.com/kaienkira/acme-v2-client)
+* README.md at [kaienkira/acme-v2-client](https://github.com/kaienkira/acme-v2-client)
+* [Hetzner DNS Public API](https://dns.hetzner.com/api-docs/)
+* [diafygi/gethttpsforfree](https://github.com/diafygi/gethttpsforfree) is a great way to learn how ACME protocol works.
 
-[Hetzner DNS Public API](https://dns.hetzner.com/api-docs/)
-
-[diafygi/gethttpsforfree](https://github.com/diafygi/gethttpsforfree) is a great way to learn how ACME protocol works.
 ## Thanks
 [kaienkira](https://github.com/kaienkira), tialaramex@reddit
