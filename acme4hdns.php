@@ -561,12 +561,40 @@ final class AcmeClient
     }
 }
 
+function getZoneIdForDomain($authApiToken, $domain)
+{
+    $parts = explode(".", $domain);
+    $n = sizeof($parts);
+    if ($n < 2)
+    {
+        print("domain needs to have at least two parts separated by a dot, e.g. example.com\n");
+        return "";
+    }
+
+    $domain = $parts[$n-2] . "." . $parts[$n-1];
+
+    $url = "https://dns.hetzner.com/api/v1/zones";
+    $headers = array('Auth-API-Token: '.$authApiToken);
+
+    $result = Util::httpRequest($url, "GET", '', $headers);
+    $zresp = $result['response'];
+
+    $j = json_decode($zresp);
+
+    for ($i = 0; $i < sizeof($j->zones); $i++)
+    {
+        if ($domain === $j->zones[$i]->name)
+            return $j->zones[$i]->id;
+    }
+
+    return "";
+}
+
 function printUsage($prog_name)
 {
     echo "usage: $prog_name ".
          '-d <domain_list(domain1;domain2...;domainN)> '.
          '-k <auth_api_toKen> '.
-         '-z <zone_id> '.
          '[-t <terms_of_service>]'.
          "\n";
 }
@@ -574,10 +602,10 @@ function printUsage($prog_name)
 function main($argc, $argv)
 {
     $prog_name = basename($argv[0]);
-    $cmd_options = getopt('d:k:z:t:');
+    $cmd_options = getopt('d:k:t:');
     if (!isset($cmd_options['d']) ||
-        !isset($cmd_options['k']) ||
-        !isset($cmd_options['z'])) {
+        !isset($cmd_options['k']))
+	{
         printUsage($prog_name);
         return false;
     }
@@ -587,8 +615,9 @@ function main($argc, $argv)
     $domain_list = explode(";", $cmd_options['d']);
     $output_cert_file = "domain.crt";
     $authApiToken = $cmd_options['k'];
-    $zoneId = $cmd_options['z'];
     $tos = isset($cmd_options['t']) ? $cmd_options['t'] : '';
+
+    $zoneId = getZoneIdForDomain($authApiToken, $domain_list[0]);
 
     // create acme client
     $acme_client = new AcmeClient();
