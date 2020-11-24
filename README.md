@@ -19,7 +19,7 @@
 ## Output File (hardcoded name)
 * domain.crt
 
-## Other File
+## Other File (hardcoded name)
 * domain.key
 
 ## Files to install on your server
