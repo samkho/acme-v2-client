@@ -38,6 +38,7 @@ You'll need to set some variables in this file.
 * README.md at [kaienkira/acme-v2-client](https://github.com/kaienkira/acme-v2-client)
 * [Hetzner DNS Public API](https://dns.hetzner.com/api-docs/)
 * [diafygi/gethttpsforfree](https://github.com/diafygi/gethttpsforfree) is a great way to learn how ACME protocol works.
+* [samkho/when2renew](https://github.com/samkho/when2renew) (shameless plug)
 
 ## Thanks
 [kaienkira](https://github.com/kaienkira), tialaramex@reddit
